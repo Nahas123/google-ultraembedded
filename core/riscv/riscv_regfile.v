@@ -61,35 +61,6 @@ module riscv_regfile
     ,output [ 31:0]  ra0_value_o
     ,output [ 31:0]  rb0_value_o
 );
-
-//-----------------------------------------------------------------
-// Xilinx specific register file (single issue)
-//-----------------------------------------------------------------
-generate
-if (SUPPORT_REGFILE_XILINX)
-begin: REGFILE_XILINX_SINGLE
-
-    riscv_xilinx_2r1w
-    u_reg
-    (
-        // Inputs
-         .clk_i(clk_i)
-        ,.rst_i(rst_i)
-        ,.rd0_i(rd0_i)
-        ,.rd0_value_i(rd0_value_i)
-        ,.ra_i(ra0_i)
-        ,.rb_i(rb0_i)
-
-        // Outputs
-        ,.ra_value_o(ra0_value_o)
-        ,.rb_value_o(rb0_value_o)
-    );
-end
-//-----------------------------------------------------------------
-// Flop based register file
-//-----------------------------------------------------------------
-else
-begin: REGFILE
     reg [31:0] reg_r1_q;
     reg [31:0] reg_r2_q;
     reg [31:0] reg_r3_q;
@@ -121,6 +92,35 @@ begin: REGFILE
     reg [31:0] reg_r29_q;
     reg [31:0] reg_r30_q;
     reg [31:0] reg_r31_q;
+//-----------------------------------------------------------------
+// Xilinx specific register file (single issue)
+//-----------------------------------------------------------------
+generate
+if (SUPPORT_REGFILE_XILINX)
+begin: REGFILE_XILINX_SINGLE
+
+    riscv_xilinx_2r1w
+    u_reg
+    (
+        // Inputs
+         .clk_i(clk_i)
+        ,.rst_i(rst_i)
+        ,.rd0_i(rd0_i)
+        ,.rd0_value_i(rd0_value_i)
+        ,.ra_i(ra0_i)
+        ,.rb_i(rb0_i)
+
+        // Outputs
+        ,.ra_value_o(ra0_value_o)
+        ,.rb_value_o(rb0_value_o)
+    );
+end
+//-----------------------------------------------------------------
+// Flop based register file
+//-----------------------------------------------------------------
+else
+begin: REGFILE
+
 
     // Simulation friendly names
     wire [31:0] x0_zero_w = 32'b0;
